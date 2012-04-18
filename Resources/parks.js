@@ -1,116 +1,64 @@
-var view = {};
-view.search = require('search');
-view.net = require('net');
+var mcps = {};
+mcps.search = require('search');
+mcps.net = require('net');
 
-exports.createParksView = function(e){
+function updateParkData() {
 	
-	var parksWindow = Ti.UI.createWindow({
-			title:'Parks Window',
-			backgroundColor: 'white'
-	});
-	
-	var searchBar = view.search.createSearchBar();
-	var parkInfo = {};
 	var park_data = [];
 		park_data[0] = [];
 		park_data[1] = [];
 		
-	var park_infos = [];
-	var ptable = Ti.UI.createTableView({headerTitle:'Parks'});
-
-	view.net.getParksInfo(function(data) {
-		
-		
+	mcps.net.getParksInfo(function(data) {
 		setTimeout(function() {
-			parkInfo = data;
-				
-			for(var i = 0; i < Object.keys(parkInfo).length; i++)
+			var park_info = data;
+			for(var i = 0; i < Object.keys(park_info).length; i++)
 			{
-				park_data[0][i] = parkInfo[i].title;
-				park_data[1][i] = parkInfo[i].link;
+				park_data[0][i] = park_info[i].title;
+				park_data[1][i] = park_info[i].link;
 			}
-			
-					
-			ptable.setData(park_data[0]);
-			parkView.add(ptable);			
-			//alert(parkInfo[0].title);
-			alert(park_data[0][12]);
-			
 		},2000);
+	});
+	
+	return park_data;
+}
 
-	});
-	
-	var mainView = Ti.UI.createView({
-		backgroundColor:'white',
-		width:'100%',
-		height:'75%',
-		top:65
-	});
-	
-	var parkView = Ti.UI.createView({
-		backgroundColor:'white',
-		width:'75%',
-		height:'75%',
-		top:65,
-		left:0
-	});
-	
-	var distView = Ti.UI.createView({
-		backgroundColor:'white',
-		width:'25%',
-		height:'75%',
-		top:65,
-		right:0
-	});
-	
-	var pdata = [
-		{title:'Whitnall Park'},
-		{title:'Greenfield Park'},
-		{title:'Alan Kulwiki Park'},
-		{title:'Hales Corners Park'},
-		{title:'Bradford Beach'},
-		{title:'Brown Deer Park'},
-		{title:'Cambridge Woods'},
-		{title:'Humboldt Park'},
-		{title:'Bay View Park'}
-	];
-	
-	var ddata = [
-		{title:'5.38 mi.'},
-		{title:'10.56 mi.'},
-		{title:'0.53 mi.'},
-		{title:'1.93 mi.'},
-		{title:'33.34 mi.'},
-		{title:'42.40 mi.'},
-		{title:'31.00 mi.'},
-		{title:'12.94 mi.'},
-		{title:'34.49 mi.'}
-	];
 
-	
-	var dtable = Ti.UI.createTableView({data:ddata, headerTitle:'Distance'});
-	
-	var backButton = Ti.UI.createButton({
-		title: 'Back',
-		bottom: 30,
-		width: 100,
-		height: 60
-	});
-	
-	backButton.addEventListener('click', function(e){
-		alert(parkInfo);
-		parksWindow.close();
-	});
-	
-	distView.add(dtable);
-	
-	mainView.add(parkView);
-	mainView.add(distView);
+exports.createParkWindow = function(e) {
+		var parksWin = Ti.UI.createWindow({
+			title:'Parks Window',
+			backgroundColor:'white'
+			// Add background image here eventually
+		});
 		
-	parksWindow.add(searchBar);
-	parksWindow.add(mainView);
-	parksWindow.add(backButton);
-	
-	
-	return parksWindow;
+		var searchBar = mcps.search.createSearchBar();
+		var backButton = Ti.UI.createButton({
+			title: 'Back',
+			bottom: 30,
+			width: 100,
+			height: 60
+		});
+		
+		var park_table = Ti.UI.createTableView({headerTitle:'Parks'});
+		var data_table = Ti.UI.createTableView({headerTitle:'Data'});
+		var park_data;
+		
+		/* Get parks data from web api */
+		setTimeout(function(){
+			park_data = updateParkData();
+			park_table.setData(park_data[0]);
+			alert(park_data[0][10]);
+		}, 2000);
+		
+		
+		/* Event Listeners */
+		backButton.addEventListener('click', function(e){
+			parksWin.close();
+		});
+		
+		
+		/* Add elements to window and return */
+		parksWin.add(searchBar);
+		parksWin.add(backButton);
+		parksWin.add(park_table);
+		parksWin.add(data_table);
 }
