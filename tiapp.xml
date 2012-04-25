@@ -7,14 +7,14 @@
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>1.8.2</sdk-version>
-    <id>gov.milwaukeecounty.parks</id>
-    <name>mcps</name>
+    <sdk-version>2.0.1.GA2</sdk-version>
+    <id>com.countyparks.mobileapp</id>
+    <name>Milwaukee Parks</name>
     <version>1.0</version>
-    <publisher>BCORNEJO</publisher>
+    <publisher>br4n</publisher>
     <url>http://countyparks.com</url>
     <description>not specified</description>
-    <copyright>2012 by BCORNEJO</copyright>
+    <copyright>2012 by br4n</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
@@ -23,7 +23,8 @@
     <fullscreen>false</fullscreen>
     <navbar-hidden>false</navbar-hidden>
     <analytics>true</analytics>
-    <guid>e8174e1f-8882-479c-bf73-0c94c3886560</guid>
+    <guid>9aab2b93-4ed2-443e-98db-c0691c632e04</guid>
+    <property name="ti.ui.defaultunit">system</property>
     <iphone>
         <orientations device="iphone">
             <orientation>Ti.UI.PORTRAIT</orientation>
@@ -36,5 +37,13 @@
         </orientations>
     </iphone>
     <android xmlns:android="http://schemas.android.com/apk/res/android"/>
+    <mobileweb>
+        <precache/>
+        <splash>
+            <enabled>true</enabled>
+            <inline-css-images>true</inline-css-images>
+        </splash>
+        <theme>default</theme>
+    </mobileweb>
     <modules/>
 </ti:app>
